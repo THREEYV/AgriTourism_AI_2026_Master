@@ -1,0 +1,10 @@
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { Sprout, Eye, EyeOff } from 'lucide-vue-next'
+import { useAppStore } from '../stores/app'
+const router=useRouter(),store=useAppStore()
+const mode=ref('login'),nickname=ref('体验用户'),phone=ref('13800000000'),password=ref('123456'),show=ref(false),agree=ref(true)
+function submit(){if(!phone.value||!password.value){alert('请填写手机号和密码');return}if(mode.value==='register'&&!agree.value){alert('请先勾选用户协议');return}if(password.value.length<6){alert('密码至少 6 位');return}store.login({nickname:nickname.value||'体验用户',phone:phone.value});router.push('/')}
+</script>
+<template><div class="auth-page"><div class="auth-side"><div class="brand brand-white"><div class="brand-mark"><Sprout/></div><div><b>乡韵智创</b><small>XiangYun AI</small></div></div><div class="auth-message"><span class="kicker">SMART RURAL FUTURE</span><h1>AI赋能乡村产业<br>智创农文旅新未来</h1><p>用人工智能连接产业、文化与创意。</p></div><div class="auth-decoration">GROW · CONNECT · CREATE</div></div><div class="auth-main"><div class="auth-box"><span class="kicker">WELCOME</span><h2>{{mode==='login'?'欢迎回来':'创建你的账户'}}</h2><p class="muted">{{mode==='login'?'登录后开启智能助农与文旅体验':'注册一个账户，保存你的创作与分析记录'}}</p><div class="auth-switch"><button :class="{active:mode==='login'}" @click="mode='login'">登录</button><button :class="{active:mode==='register'}" @click="mode='register'">注册</button></div><label v-if="mode==='register'">用户昵称<input v-model="nickname" placeholder="请输入昵称"></label><label>手机号<input v-model="phone" placeholder="请输入手机号"></label><label>密码<div class="password-wrap"><input v-model="password" :type="show?'text':'password'" placeholder="至少 6 位密码"><button @click="show=!show"><component :is="show?EyeOff:Eye" :size="18"/></button></div></label><label v-if="mode==='register'" class="agree"><input v-model="agree" type="checkbox">我已阅读并同意用户协议与隐私政策</label><button class="btn btn-primary wide" @click="submit">{{mode==='login'?'登录':'注册并登录'}}</button><p class="disclaimer">原型演示：任意手机号与 6 位以上密码均可模拟登录。</p></div></div></div></template>

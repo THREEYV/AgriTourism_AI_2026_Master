@@ -1,0 +1,276 @@
+/* ============================================================
+   抖音风格短视频样式（实拍素材版）：播放器 + 模板封面
+   尺寸统一使用 cqw（相对播放器宽度），任何大小下比例一致
+   ============================================================ */
+
+.dy{position:relative;width:100%;aspect-ratio:9/16;margin:0 auto;border-radius:18px;overflow:hidden;container-type:inline-size;cursor:pointer;user-select:none;-webkit-user-select:none;background:#000;color:#fff;font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;box-shadow:0 16px 36px rgba(20,40,28,.26)}
+.dy-screen{position:absolute;left:0;right:0;top:0;bottom:11cqw;overflow:hidden;background:#0b0b0b}
+
+/* —— 画面 —— */
+.dy-backdrop{position:absolute;inset:0;overflow:hidden;background:linear-gradient(170deg,var(--c1),var(--c2))}
+.dy-backdrop img{position:absolute;left:-12%;top:-12%;width:124%;height:124%;object-fit:cover;filter:blur(16px) brightness(.5) saturate(1.15)}
+.dy-video{position:absolute;inset:0;overflow:hidden;background:linear-gradient(165deg,var(--c1),var(--c2))}
+.dy.landscape .dy-video{top:var(--band-top);bottom:auto;height:calc(var(--band) * 100%);box-shadow:0 0 0 1px rgba(255,255,255,.06)}
+.dy-shot{position:absolute;inset:0;overflow:hidden}
+.dy-shot::after{content:'';position:absolute;inset:0;pointer-events:none}
+.dy-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--px,50%) var(--py,50%);transform-origin:var(--px,50%) var(--py,50%);will-change:transform;animation-duration:calc(var(--shot-ms) + 700ms);animation-timing-function:cubic-bezier(.35,.15,.65,.9);animation-fill-mode:both}
+
+/* 运镜：推近 / 拉远 / 横移 / 上下摇 */
+.fx-push{animation-name:fx-push}
+.fx-pull{animation-name:fx-pull}
+.fx-pan-r{animation-name:fx-pan-r}
+.fx-pan-l{animation-name:fx-pan-l}
+.fx-tilt-u{animation-name:fx-tilt-u}
+.fx-tilt-d{animation-name:fx-tilt-d}
+@keyframes fx-push{from{transform:scale(1.02)}to{transform:scale(1.17)}}
+@keyframes fx-pull{from{transform:scale(1.19)}to{transform:scale(1.03)}}
+@keyframes fx-pan-r{from{object-position:22% var(--py,50%);transform:scale(1.08) translateX(2.5%)}to{object-position:78% var(--py,50%);transform:scale(1.08) translateX(-2.5%)}}
+@keyframes fx-pan-l{from{object-position:78% var(--py,50%);transform:scale(1.08) translateX(-2.5%)}to{object-position:22% var(--py,50%);transform:scale(1.08) translateX(2.5%)}}
+@keyframes fx-tilt-u{from{object-position:var(--px,50%) 78%;transform:scale(1.08) translateY(-2%)}to{object-position:var(--px,50%) 22%;transform:scale(1.08) translateY(2%)}}
+@keyframes fx-tilt-d{from{object-position:var(--px,50%) 22%;transform:scale(1.08) translateY(2%)}to{object-position:var(--px,50%) 78%;transform:scale(1.08) translateY(-2%)}}
+
+/* 转场：缩放冲击 / 甩镜 / 闪白 / 叠化 */
+.cut-fade-enter-active,.cut-fade-leave-active{transition:opacity .55s ease}
+.cut-fade-enter-from,.cut-fade-leave-to{opacity:0}
+.cut-zoom-enter-active{transition:opacity .3s ease,transform .55s cubic-bezier(.2,.8,.2,1),filter .55s ease}
+.cut-zoom-leave-active{transition:opacity .4s ease,transform .45s ease,filter .45s ease}
+.cut-zoom-enter-from{opacity:0;transform:scale(1.35);filter:blur(8px)}
+.cut-zoom-leave-to{opacity:0;transform:scale(.92);filter:blur(4px)}
+.cut-whip-enter-active,.cut-whip-leave-active{transition:transform .5s cubic-bezier(.75,0,.25,1),filter .5s ease}
+.cut-whip-enter-from{transform:translateX(100%);filter:blur(12px)}
+.cut-whip-leave-to{transform:translateX(-100%);filter:blur(12px)}
+.cut-flash-enter-active,.cut-flash-leave-active{transition:opacity .25s ease}
+.cut-flash-enter-from,.cut-flash-leave-to{opacity:0}
+.dy-flash{position:absolute;inset:0;background:#fff;pointer-events:none;opacity:0;animation:dy-flash .6s ease-out}
+@keyframes dy-flash{0%{opacity:.85}100%{opacity:0}}
+
+/* 调色：跟随“视频风格”，单镜头可覆盖（old = 旧胶片回忆） */
+.g-fresh .dy-photo,.g-fresh .dy-still-img{filter:brightness(1.04) saturate(1.1) contrast(.98)}
+.g-film .dy-photo,.g-film .dy-still-img{filter:contrast(1.1) saturate(.88) brightness(.97)}
+.g-film::after{background:linear-gradient(180deg,rgba(0,95,115,.28),rgba(255,140,60,.18));mix-blend-mode:soft-light}
+.g-vivid .dy-photo,.g-vivid .dy-still-img{filter:saturate(1.3) contrast(1.06) brightness(1.03)}
+.g-docu .dy-photo,.g-docu .dy-still-img{filter:saturate(.84) contrast(1.04) sepia(.08)}
+.g-guofeng .dy-photo,.g-guofeng .dy-still-img{filter:saturate(.7) sepia(.22) contrast(.95) brightness(1.04)}
+.g-guofeng::after{background:rgba(236,218,180,.22);mix-blend-mode:multiply}
+.g-old .dy-photo,.g-old .dy-still-img{filter:sepia(.65) saturate(.5) contrast(1.08) brightness(.92)}
+.g-old::after{background:radial-gradient(ellipse at center,transparent 45%,rgba(40,25,10,.6));animation:dy-flicker .16s steps(2) infinite}
+@keyframes dy-flicker{0%{opacity:.85}100%{opacity:1}}
+
+/* 胶片颗粒 + 暗角 */
+.dy-grain{position:absolute;inset:-50%;pointer-events:none;opacity:.13;mix-blend-mode:overlay;background-size:180px;animation:dy-grain .6s steps(4) infinite;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+@keyframes dy-grain{0%{transform:translate(0,0)}25%{transform:translate(-5%,3%)}50%{transform:translate(4%,-4%)}75%{transform:translate(-3%,-2%)}100%{transform:translate(2%,5%)}}
+.dy-vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 55%,rgba(0,0,0,.36) 100%)}
+
+/* 氛围光效 */
+.dy-atmo{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.atmo-sun::before{content:'';position:absolute;inset:-20%;background:radial-gradient(circle at 82% 14%,rgba(255,222,160,.72),rgba(255,180,100,.26) 22%,transparent 48%);mix-blend-mode:screen;animation:atmo-sun 5s ease-in-out infinite alternate}
+.atmo-sun::after{content:'';position:absolute;left:-30%;right:-30%;top:20%;height:16%;background:linear-gradient(100deg,transparent 30%,rgba(255,232,195,.24) 48%,transparent 66%);mix-blend-mode:screen;animation:atmo-ray 7s ease-in-out infinite alternate}
+@keyframes atmo-sun{from{opacity:.7;transform:translate(0,0)}to{opacity:1;transform:translate(-3%,2%)}}
+@keyframes atmo-ray{from{opacity:.35;transform:rotate(-24deg) translateX(-6%)}to{opacity:.85;transform:rotate(-24deg) translateX(6%)}}
+.atmo-mist::before,.atmo-mist::after{content:'';position:absolute;left:-40%;width:180%;height:45%;background:radial-gradient(ellipse 45% 50% at 30% 50%,rgba(255,255,255,.4),transparent 70%),radial-gradient(ellipse 35% 45% at 75% 55%,rgba(255,255,255,.3),transparent 70%);filter:blur(6px);animation:atmo-mist 14s linear infinite alternate}
+.atmo-mist::before{top:28%}
+.atmo-mist::after{top:58%;opacity:.8;animation-duration:18s;animation-direction:alternate-reverse}
+@keyframes atmo-mist{from{transform:translateX(-12%)}to{transform:translateX(12%)}}
+.mote{position:absolute;bottom:-4%;width:calc(var(--s) * 1.1cqw);height:calc(var(--s) * 1.1cqw);border-radius:50%;background:rgba(255,248,225,.92);box-shadow:0 0 1.6cqw rgba(255,240,200,.85);opacity:0;animation:atmo-rise linear infinite}
+@keyframes atmo-rise{0%{transform:translate(0,0);opacity:0}15%{opacity:.8}85%{opacity:.55}100%{transform:translate(6cqw,-120cqw);opacity:0}}
+.atmo-embers .mote{background:#ffb347;box-shadow:0 0 2cqw #ff7b2a;animation-name:atmo-ember}
+@keyframes atmo-ember{0%{transform:translate(0,0) scale(1);opacity:0}10%{opacity:1}100%{transform:translate(-8cqw,-90cqw) scale(.35);opacity:0}}
+.orb{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(var(--rgb),.55),rgba(var(--rgb),.16) 60%,transparent 72%);filter:blur(2px);mix-blend-mode:screen;animation:atmo-orb 9s ease-in-out infinite alternate}
+@keyframes atmo-orb{from{transform:translate(0,0) scale(1);opacity:.45}to{transform:translate(4cqw,-6cqw) scale(1.15);opacity:.9}}
+.wisp{position:absolute;bottom:16%;width:24cqw;height:44cqw;background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(255,255,255,.42),transparent 70%);filter:blur(7px);opacity:0;animation:atmo-steam 4.6s ease-out infinite}
+@keyframes atmo-steam{0%{transform:translate(-50%,10%) scale(.6,.5);opacity:0}25%{opacity:.7}100%{transform:translate(-40%,-60%) scale(1.3,1.1);opacity:0}}
+
+/* 纪实电影黑边 */
+.dy-letterbox::before,.dy-letterbox::after{content:'';position:absolute;left:0;right:0;height:7%;background:#070707;z-index:1}
+.dy-letterbox::before{top:0}.dy-letterbox::after{bottom:0}
+.dy.landscape .dy-letterbox{display:none}
+
+.dy-shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.42) 0%,transparent 17%,transparent 56%,rgba(0,0,0,.58) 100%)}
+
+/* —— 状态栏 / 顶栏 —— */
+.dy-status{position:absolute;top:0;left:0;right:0;height:7cqw;display:flex;align-items:center;justify-content:space-between;padding:0 5.5cqw 0 7cqw;font-size:3.4cqw;z-index:4;pointer-events:none}
+.dy-status b{font-weight:600}
+.sb-icons{display:flex;gap:1.3cqw;align-items:center}
+.sb-icons svg{height:2.6cqw;width:auto;fill:#fff}
+.dy-top{position:absolute;top:7cqw;left:0;right:0;height:9cqw;display:flex;align-items:center;justify-content:center;font-size:4cqw;z-index:4}
+.dy-top nav{display:flex;gap:4.5cqw;align-items:center}
+.dy-top nav span{opacity:.72}
+.dy-top nav b{position:relative;font-weight:700}
+.dy-top nav b::after{content:'';position:absolute;left:50%;bottom:-1.8cqw;width:4.5cqw;height:.7cqw;border-radius:1cqw;background:#fff;transform:translateX(-50%)}
+.dy-search{position:absolute;right:4cqw;width:5cqw;height:5cqw}
+.dy-badge{position:absolute;left:4cqw;font-size:2.9cqw;font-weight:700;padding:.6cqw 1.8cqw;border-radius:1.6cqw;background:rgba(255,255,255,.22);backdrop-filter:blur(4px)}
+.dy-date{position:absolute;top:17.5cqw;left:4.5cqw;font-size:3.2cqw;letter-spacing:.3cqw;opacity:.92;font-family:'Courier New',monospace;text-shadow:0 .3cqw 1cqw rgba(0,0,0,.5);z-index:3}
+.dy-chapter{position:absolute;top:18cqw;left:0;right:0;text-align:center;font-size:3.4cqw;letter-spacing:1.2cqw;font-family:'Songti SC','STSong','SimSun',serif;opacity:.92;z-index:3;text-shadow:0 .3cqw 1.2cqw rgba(0,0,0,.6)}
+
+/* —— 花字标题 —— */
+.dy-headline{position:absolute;left:5%;right:5%;top:max(15%, calc(var(--band-top) - 17%));display:flex;flex-direction:column;align-items:center;gap:1.4cqw;z-index:3;pointer-events:none}
+.dy-headline span{display:inline-block;font-weight:900;font-size:8.4cqw;line-height:1.15;letter-spacing:.3cqw;text-align:center;white-space:nowrap;animation:dy-hl-in .55s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes dy-hl-in{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+.hl-pop-leave-active{transition:opacity .15s}
+.hl-pop-leave-to{opacity:0}
+/* 带货：黄底红字 + 红底白字 */
+.dy-ecom .dy-headline span{background:#ffe14a;color:#e8202a;padding:.6cqw 2.6cqw;border-radius:1.4cqw;box-shadow:0 .8cqw 2cqw rgba(0,0,0,.28)}
+.dy-ecom .dy-headline span:nth-child(2){background:#e8202a;color:#fff;font-size:9.2cqw}
+/* 文旅：白字黑描边 + 第二行黄字 */
+.dy-vlog .dy-headline span{color:#fff;-webkit-text-stroke:1.3cqw #141414;paint-order:stroke fill;text-shadow:0 1cqw 2cqw rgba(0,0,0,.35)}
+.dy-vlog .dy-headline span:nth-child(2){color:#ffe14a;font-size:9.2cqw}
+/* 纪实：宋体留白 */
+.dy-story .dy-headline span{font-family:'Songti SC','STSong','SimSun',serif;font-weight:800;color:#fff;font-size:7.6cqw;letter-spacing:1.2cqw;text-shadow:0 .5cqw 2.5cqw rgba(0,0,0,.7)}
+.dy-story .dy-headline span:nth-child(2){font-size:5.2cqw;letter-spacing:.8cqw;color:#f6e3b4;font-weight:600}
+
+/* —— 字幕 —— */
+.dy-sub{position:absolute;left:4%;right:20%;top:62%;text-align:center;font-weight:800;font-size:5.4cqw;line-height:1.35;color:#fff;-webkit-text-stroke:.9cqw #111;paint-order:stroke fill;z-index:3;pointer-events:none}
+.dy.wide .dy-sub{top:calc(100% - var(--band-top) + 1.8%)}
+.dy-sub em{font-style:normal;color:#ffe14a;font-size:1.1em}
+.dy-ecom .dy-sub em{color:#fff;background:#fe2c55;-webkit-text-stroke:0;padding:0 1.2cqw;border-radius:1cqw;margin:0 .6cqw;display:inline-block}
+.dy-story .dy-sub{font-family:'Songti SC','STSong','SimSun',serif;font-weight:700;-webkit-text-stroke:0;text-shadow:0 .4cqw 1.6cqw rgba(0,0,0,.85);font-size:4.9cqw;letter-spacing:.4cqw}
+.dy-story .dy-sub em{color:#f6d37a}
+.sub-enter-active{transition:all .35s cubic-bezier(.3,1.4,.5,1)}
+.sub-leave-active{transition:all .15s ease}
+.sub-enter-from{opacity:0;transform:translateY(3cqw) scale(.92)}
+.sub-leave-to{opacity:0}
+
+/* —— 价格标签 —— */
+.dy-price{position:absolute;right:21%;top:44%;z-index:3;display:flex;flex-direction:column;align-items:center;background:linear-gradient(180deg,#ff3b30,#d9101a);border-radius:2.4cqw;padding:1.2cqw 3cqw 1.4cqw;box-shadow:0 1.6cqw 4cqw rgba(0,0,0,.35);animation:dy-pulse 1.6s ease-in-out infinite}
+.dy-price em{font-style:normal;font-size:2.7cqw;background:#ffe14a;color:#c4161c;font-weight:800;padding:.2cqw 1.4cqw;border-radius:1cqw;margin:-3.2cqw 0 .6cqw}
+.dy-price span{font-size:3.8cqw;font-weight:800}
+.dy-price b{font-size:7.4cqw;letter-spacing:-.2cqw}
+@keyframes dy-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.stamp-enter-active{transition:all .45s cubic-bezier(.3,1.6,.5,1)}
+.stamp-leave-active{transition:all .2s}
+.stamp-enter-from{opacity:0;transform:scale(1.8)}
+.stamp-leave-to{opacity:0;transform:scale(.7)}
+
+/* —— 右侧互动栏 —— */
+.dy-rail{position:absolute;right:2.2cqw;bottom:11%;display:flex;flex-direction:column;align-items:center;gap:3.6cqw;z-index:4;cursor:default}
+.dy-avatar{position:relative;width:11.5cqw;height:11.5cqw;border-radius:50%;border:.6cqw solid #fff;margin-bottom:2cqw;background:#ccc}
+.dy-avatar img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover}
+.dy-avatar i{position:absolute;bottom:-2.4cqw;left:50%;transform:translateX(-50%);width:4.8cqw;height:4.8cqw;border-radius:50%;background:#fe2c55;display:grid;place-items:center}
+.dy-avatar i svg{width:3.4cqw;height:3.4cqw;stroke-width:3.2}
+.dy-act{position:relative;display:flex;flex-direction:column;align-items:center;gap:.6cqw;border:0;background:none;color:#fff;padding:0;cursor:pointer}
+.dy-act svg{width:8.4cqw;height:8.4cqw;filter:drop-shadow(0 .4cqw 1cqw rgba(0,0,0,.35));transition:transform .25s}
+.dy-act.on svg{animation:dy-like .4s ease}
+@keyframes dy-like{50%{transform:scale(1.35)}}
+.dy-act small{font-size:2.9cqw;font-weight:600;text-shadow:0 .3cqw .8cqw rgba(0,0,0,.5)}
+.dy-disc{width:11cqw;height:11cqw;border-radius:50%;background:radial-gradient(circle,#2b2b2b 0 56%,#0e0e0e 58% 100%);display:grid;place-items:center;margin-top:1cqw;box-shadow:0 0 0 1.2cqw rgba(255,255,255,.07);animation:dy-spin 6s linear infinite}
+.dy-disc img{width:6.6cqw;height:6.6cqw;border-radius:50%;object-fit:cover}
+@keyframes dy-spin{to{transform:rotate(360deg)}}
+
+/* —— 左下信息 —— */
+.dy-info{position:absolute;left:3.5cqw;right:21%;bottom:3.4cqw;display:grid;gap:1.5cqw;z-index:3;text-shadow:0 .3cqw 1cqw rgba(0,0,0,.45)}
+.dy-origin{display:flex;align-items:center;gap:1cqw;width:max-content;max-width:100%;background:rgba(23,74,52,.66);color:#e9f2e6;border-radius:1.2cqw;padding:.7cqw 1.6cqw;font-size:2.9cqw;letter-spacing:.5px;margin-bottom:1cqw;backdrop-filter:blur(4px)}
+.dy-origin svg{width:3.2cqw;height:3.2cqw;flex:none}
+.dy-cart{display:flex;align-items:center;gap:1.4cqw;width:max-content;max-width:100%;background:rgba(255,255,255,.93);color:#222;border-radius:1.4cqw;padding:1cqw 2cqw 1cqw 1cqw;font-size:3.2cqw;text-shadow:none;animation:dy-cart-in .6s .6s cubic-bezier(.3,1.5,.5,1) both}
+.cart-ico{width:5.4cqw;height:5.4cqw;border-radius:1cqw;background:#ffc300;display:grid;place-items:center;flex:none}
+.cart-ico svg{width:3.6cqw;height:3.6cqw;color:#fff;stroke-width:2.6}
+.cart-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dy-cart b{color:#fe2c55;font-size:3.6cqw;flex:none}
+@keyframes dy-cart-in{from{opacity:0;transform:translateX(-30%)}to{opacity:1;transform:none}}
+.dy-loc{display:flex;align-items:center;gap:1cqw;width:max-content;max-width:100%;font-size:3.2cqw;background:rgba(0,0,0,.32);padding:.9cqw 2.2cqw .9cqw 1.6cqw;border-radius:5cqw;white-space:nowrap}
+.dy-loc svg{width:3.6cqw;height:3.6cqw;color:#ffcf3a;flex:none}
+.dy-account{font-size:4.3cqw;font-weight:700}
+.dy-caption{margin:0;font-size:3.5cqw;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dy-caption span{font-weight:700}
+.dy-music{display:flex;align-items:center;gap:1.4cqw;font-size:3.3cqw}
+.dy-music svg{width:3.6cqw;height:3.6cqw;flex:none}
+.dy-marquee{overflow:hidden;white-space:nowrap;flex:1;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 90%,transparent)}
+.dy-marquee span{display:inline-block;animation:dy-marquee 9s linear infinite}
+@keyframes dy-marquee{to{transform:translateX(-50%)}}
+
+/* —— 进度条 / 暂停 / 双击点赞 —— */
+.dy-progress{position:absolute;left:0;right:0;bottom:0;height:3cqw;display:flex;align-items:flex-end;z-index:5;cursor:pointer}
+.dy-progress i{position:relative;display:block;width:100%;height:.5cqw;background:rgba(255,255,255,.22);transition:height .2s}
+.dy-progress b{position:absolute;left:0;top:0;bottom:0;background:rgba(255,255,255,.85);transition:width .1s linear}
+.dy.paused .dy-progress i,.dy-progress:hover i{height:1cqw}
+.dy-paused{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5;pointer-events:none;opacity:.72}
+.dy-paused svg{width:15cqw;height:15cqw;filter:drop-shadow(0 1cqw 3cqw rgba(0,0,0,.4))}
+.dy-burst{position:absolute;z-index:6;font-size:22cqw;color:#fe2c55;pointer-events:none;transform:translate(-50%,-50%) rotate(var(--r));animation:dy-burst .9s ease-out forwards;text-shadow:0 1cqw 4cqw rgba(254,44,85,.5)}
+@keyframes dy-burst{0%{transform:translate(-50%,-50%) rotate(var(--r)) scale(.3);opacity:0}25%{transform:translate(-50%,-50%) rotate(var(--r)) scale(1.15);opacity:1}45%{transform:translate(-50%,-50%) rotate(var(--r)) scale(.95)}100%{transform:translate(-50%,-140%) rotate(var(--r)) scale(1.6);opacity:0}}
+
+/* —— 底部导航栏 —— */
+.dy-tabbar{position:absolute;left:0;right:0;bottom:0;height:11cqw;background:#000;display:flex;align-items:center;justify-content:space-around;padding:0 2cqw;font-size:3.6cqw;color:rgba(255,255,255,.6);cursor:default;border-top:1px solid rgba(255,255,255,.08)}
+.dy-tabbar b{color:#fff;font-weight:700}
+.dy-plus{width:9.6cqw;height:6.4cqw;border-radius:1.6cqw;background:#fff;display:grid;place-items:center;color:#000;box-shadow:-.7cqw 0 0 #25f4ee,.7cqw 0 0 #fe2c55}
+.dy-plus svg{width:4cqw;height:4cqw;stroke-width:3}
+
+/* 暂停时冻结所有动画 */
+.dy.paused .dy-screen *,.dy.paused .dy-screen *::before,.dy.paused .dy-screen *::after{animation-play-state:paused!important}
+
+/* ============================================================
+   模板卡片封面：抖音作品流样式（实拍首帧 + 花字标题 + 播放量）
+   ============================================================ */
+.dy-cover{overflow:hidden;background:#cfd8cf}
+.dy-cover .cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.template-card:hover .dy-cover .cover-img,.template-card.picked .dy-cover .cover-img{transform:scale(1.06)}
+.dy-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28) 0%,transparent 38%,transparent 55%,rgba(0,0,0,.45));pointer-events:none}
+.cover-hl{position:absolute;left:10px;top:34px;display:flex;flex-direction:column;align-items:flex-start;gap:3px;z-index:1;max-width:84%}
+.cover-hl i{font-style:normal;font-weight:900;font-size:14px;line-height:1.15;white-space:nowrap}
+.dy-cover.dy-ecom .cover-hl i{background:#ffe14a;color:#e8202a;padding:2px 6px;border-radius:4px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.dy-cover.dy-ecom .cover-hl i:nth-child(2){background:#e8202a;color:#fff}
+.dy-cover.dy-vlog .cover-hl i{color:#fff;-webkit-text-stroke:3px #141414;paint-order:stroke fill}
+.dy-cover.dy-vlog .cover-hl i:nth-child(2){color:#ffe14a}
+.dy-cover.dy-story .cover-hl i{font-family:'Songti SC','STSong','SimSun',serif;font-weight:800;color:#fff;letter-spacing:2px;text-shadow:0 1px 2px rgba(0,0,0,.8),0 2px 8px rgba(0,0,0,.55)}
+.dy-cover.dy-story .cover-hl i:nth-child(2){font-size:11px;color:#f6e3b4}
+.tpl-plays{position:absolute;left:8px;bottom:8px;z-index:1;font-style:normal;font-size:10px;font-weight:700;color:#fff;display:flex;align-items:center;gap:3px;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+.dy-cover .tpl-ratio,.dy-cover small{z-index:1}
+
+/* 分镜缩略图 */
+.sb-thumb{width:34px;height:44px;border-radius:7px;object-fit:cover;flex:none;background:#e3e9e3}
+
+/* —— 图生视频：一张照片的“活照片”运镜 ——
+   整段只做连续缓推缓移（首尾画面重合），不再按分镜硬切；
+   配合呼吸光与缓慢扫光，让静止画面也有细微的明暗与位移流动 */
+.dy-still{position:absolute;inset:0;overflow:hidden;will-change:transform;animation:still-float 9s ease-in-out infinite alternate}
+@keyframes still-float{from{transform:translate3d(-.25%,-.3%,0)}to{transform:translate3d(.3%,.25%,0)}}
+.dy-still::after{content:'';position:absolute;inset:0;pointer-events:none}
+.dy-still-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--px,50%) var(--py,50%);transform-origin:var(--px,50%) var(--py,50%);will-change:transform;backface-visibility:hidden;
+  animation-duration:6s;animation-timing-function:cubic-bezier(.33,0,.67,1);animation-iteration-count:infinite}
+.still-a .dy-still-img{animation-name:still-drift-a}
+.still-b .dy-still-img{animation-name:still-drift-b}
+.still-c .dy-still-img{animation-name:still-drift-c}
+.still-d .dy-still-img{animation-name:still-drift-d}
+
+/* 三种缓动轨迹：推近 / 横移 / 拉远上浮，首尾姿态一致，循环不跳帧 */
+@keyframes still-drift-a{
+  0%{transform:scale(1.045) translate3d(0,0,0) rotate(0deg)}
+  20%{transform:scale(1.075) translate3d(-1%,-.5%,0) rotate(.2deg)}
+  40%{transform:scale(1.1) translate3d(-1.8%,.4%,0) rotate(-.15deg)}
+  60%{transform:scale(1.08) translate3d(-.3%,1%,0) rotate(.18deg)}
+  80%{transform:scale(1.115) translate3d(1.5%,-.4%,0) rotate(-.2deg)}
+  100%{transform:scale(1.045) translate3d(0,0,0) rotate(0deg)}
+}
+@keyframes still-drift-b{
+  0%{transform:scale(1.14) translate3d(-2.2%,0,0) rotate(0deg)}
+  25%{transform:scale(1.12) translate3d(-.8%,-.9%,0) rotate(.22deg)}
+  50%{transform:scale(1.15) translate3d(1%,.5%,0) rotate(-.18deg)}
+  75%{transform:scale(1.11) translate3d(2.2%,-.6%,0) rotate(.16deg)}
+  100%{transform:scale(1.14) translate3d(-2.2%,0,0) rotate(0deg)}
+}
+@keyframes still-drift-c{
+  0%{transform:scale(1.16) translate3d(.8%,1.2%,0) rotate(0deg)}
+  30%{transform:scale(1.12) translate3d(-.6%,.2%,0) rotate(-.18deg)}
+  55%{transform:scale(1.09) translate3d(.4%,-.9%,0) rotate(.2deg)}
+  80%{transform:scale(1.13) translate3d(1.2%,.5%,0) rotate(-.14deg)}
+  100%{transform:scale(1.16) translate3d(.8%,1.2%,0) rotate(0deg)}
+}
+/* 细节特写机位：比其它轨迹更近，用来看果面/纹理 */
+@keyframes still-drift-d{
+  0%{transform:scale(1.24) translate3d(0,0,0) rotate(0deg)}
+  35%{transform:scale(1.29) translate3d(-.7%,-.4%,0) rotate(.14deg)}
+  70%{transform:scale(1.26) translate3d(.6%,.5%,0) rotate(-.12deg)}
+  100%{transform:scale(1.24) translate3d(0,0,0) rotate(0deg)}
+}
+
+/* 呼吸光：明暗缓慢起伏，模拟自然光变化 */
+.dy-still-glow{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;background:radial-gradient(ellipse at 52% 34%,rgba(255,244,214,.16),rgba(255,236,200,.05) 42%,transparent 68%);animation:still-glow 7s ease-in-out infinite alternate}
+@keyframes still-glow{from{opacity:.28;transform:scale(1.02) translateY(1%)}to{opacity:.78;transform:scale(1.08) translateY(-1%)}}
+
+/* 扫光：一道很淡的高光缓慢掠过画面 */
+.dy-still-sheen{position:absolute;inset:-40%;pointer-events:none;mix-blend-mode:screen;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.08) 47%,rgba(255,255,255,.14) 50%,rgba(255,255,255,.08) 53%,transparent 62%);animation:still-sheen 12s ease-in-out infinite}
+@keyframes still-sheen{0%{transform:translateX(-58%) rotate(2deg);opacity:0}14%{opacity:.85}38%{transform:translateX(58%) rotate(2deg);opacity:0}100%{transform:translateX(58%) rotate(2deg);opacity:0}}
+
+/* 纯净成片模式：去掉手机外框与抖音界面，只保留画面内容，便于直接上传平台 */
+.dy.chrome-off{border-radius:0;box-shadow:none}
+.dy.chrome-off .dy-screen{bottom:0}
+.dy.chrome-off .dy-shade{background:linear-gradient(180deg,transparent 0%,transparent 62%,rgba(0,0,0,.28) 100%)}

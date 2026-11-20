@@ -1,0 +1,2 @@
+<script setup>defineProps({ title:String, subtitle:String, action:String })</script>
+<template><div class="section-title"><div><h2>{{ title }}</h2><p v-if="subtitle">{{ subtitle }}</p></div><slot/><span v-if="action" class="muted">{{ action }}</span></div></template>
