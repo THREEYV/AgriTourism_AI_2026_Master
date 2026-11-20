@@ -8,5 +8,13 @@ export default defineConfig({
     watch: {
       ignored: ['**/.*.tmpdir/**', '**/*.tmp', '**/.verify-build/**', '**/_backup_*/**']
     }
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        main: 'index.html',
+        readme: 'dist/README.html'
+      }
+    }
   }
 })

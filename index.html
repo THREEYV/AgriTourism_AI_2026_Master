@@ -1,13 +1,128 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#1f6948" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>乡韵智创 - AI赋能乡村产业</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #2D5A3D 0%, #4A903F 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 800px;
+            padding: 2rem;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            opacity: 0.85;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .feature {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .feature-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        .link {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .link:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        footer {
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌾 乡韵智创</h1>
+        <p class="subtitle">AI赋能乡村产业，智创农文旅新未来</p>
+        
+        <p class="description">
+            乡韵智创是一款面向农业产业发展与乡村文旅融合的AI智能服务平台。<br>
+            通过人工智能技术，为农业生产经营、乡村产业规划、文旅资源开发、品牌宣传及数字内容创作提供智能化支持。
+        </p>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🌱</div>
+                <div class="feature-title">AI助农</div>
+                <div class="feature-desc">行业分析与视频制作，助力农产品品牌推广</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🏞️</div>
+                <div class="feature-title">AI文旅</div>
+                <div class="feature-desc">目的地分析与创意视频，挖掘地域文化魅力</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎬</div>
+                <div class="feature-title">AI视频</div>
+                <div class="feature-desc">模板创作、文生视频、图生视频一键生成</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-title">模型中心</div>
+                <div class="feature-desc">多模型统一接入，支持自定义API配置</div>
+            </div>
+        </div>
+
+        <a href="https://github.com/THREEYV/AgriTourism_AI_2026_Master" target="_blank" class="link">
+            📦 查看项目源码 →
+        </a>
+
+        <footer>
+            <p>© 2026 乡韵智创 | 基于 Vue 3 + Vite 构建</p>
+        </footer>
+    </div>
+</body>
 </html>
